@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Baking Recipes</string>
+    <string name="title_step_detail">Step Detail</string>
+
+    <!-- Image content description -->
+    <string name="content_desc_ic_basket">Basket Icon</string>
+    <string name="content_desc_ic_brownie">Brownie Icon</string>
+    <string name="content_desc_ic_cake">Cake Icon</string>
+    <string name="content_desc_ic_cookie">Cookie Icon</string>
+    <string name="content_desc_ic_cupcake">Cupcake Icon</string>
+    <string name="content_desc_ic_doughnut">Doughnut Icon</string>
+    <string name="content_desc_ic_list">List Icon</string>
+    <string name="content_desc_ic_pie">Pie Icon</string>
+    <string name="content_desc_ic_serving">Serving Icon</string>
+
+    <string name="recipe_list_number">%1s.</string>
+    <string name="recipe_list_ingredients">Recipe Ingredients</string>
+    <string name="recipe_list_steps">Recipe Steps</string>
+</resources>
