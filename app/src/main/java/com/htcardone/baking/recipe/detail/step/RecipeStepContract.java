@@ -9,6 +9,7 @@ public interface RecipeStepContract {
     interface View extends BaseView<RecipeStepContract.Presenter> {
         void showStep(StepsItem stepsItem);
         void enableNavButtons(boolean enablePrev, boolean enableNext);
+        void stopVideo();
     }
 
     interface Presenter extends BasePresenter {

@@ -1,8 +1,6 @@
 package com.htcardone.baking.recipe.list;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.htcardone.baking.Injection;
 import com.htcardone.baking.R;
@@ -16,13 +14,18 @@ import com.htcardone.baking.recipe.detail.step.RecipeStepPresenter;
 import com.htcardone.baking.util.ActivityUtils;
 import com.htcardone.baking.util.Log;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.htcardone.baking.util.Constants.EXTRA_RECIPE_ID;
+import static com.htcardone.baking.util.Constants.FRAG_TYPE_INGREDIENT;
+import static com.htcardone.baking.util.Constants.FRAG_TYPE_STEP;
 
 public class RecipeListActivity extends RecipeActivity implements RecipeContract.TabletView {
-    private static final String LOG_TAG = RecipeListActivity.class.getSimpleName();
+    private final String LOG_TAG = RecipeListActivity.class.getSimpleName();
+
+    private int mCurrentStepPos = -1; // -1: Ingredients, 0 -> n: Steps
+
+    private final String CURRENT_FRAG_TYPE = "CURR_FRAG_TYPE";
     private final String CURRENT_STEP_POS_KEY = "CURR_STEP_POS";
 
     private RecipeTabletPresenter mTabletPresenter;
@@ -43,13 +46,17 @@ public class RecipeListActivity extends RecipeActivity implements RecipeContract
         }
         // Get the requested recipe id
         int recipeId = getIntent().getIntExtra(EXTRA_RECIPE_ID, 0);
-        int stepPos = 0;
-        if (savedInstanceState != null) {
-            stepPos = savedInstanceState.getInt(CURRENT_STEP_POS_KEY);
-        }
 
         if (mIsTwoPaneMode) {
-            createTabletElements(recipeId, stepPos);
+            int stepPos = 0;
+            int fragmentType = FRAG_TYPE_INGREDIENT;
+
+            if (savedInstanceState != null) {
+                stepPos = savedInstanceState.getInt(CURRENT_STEP_POS_KEY);
+                fragmentType = savedInstanceState.getInt(CURRENT_FRAG_TYPE);
+            }
+
+            createTabletElements(recipeId, stepPos, fragmentType);
         } else {
             createPhoneElements(recipeId);
         }
@@ -61,7 +68,7 @@ public class RecipeListActivity extends RecipeActivity implements RecipeContract
         listFragment.setPresenter(listPresenter);
     }
 
-    private void createTabletElements(int recipeId, int stepPos) {
+    private void createTabletElements(int recipeId, int stepPos, int fragmentType) {
         // Fragment 1: List (Ingredients + Steps)
         RecipeListFragment listFragment = findListFragment();
         RecipeListPresenter listPresenter = createListPresenter(recipeId, listFragment);
@@ -78,7 +85,7 @@ public class RecipeListActivity extends RecipeActivity implements RecipeContract
         // Fragments connect to their presenters through a tablet presenter:
         mTabletPresenter = new RecipeTabletPresenter(
                 Injection.provideRecipesRepository(this),
-                listPresenter, ingredientsPresenter, stepPresenter, this);
+                listPresenter, ingredientsPresenter, stepPresenter, this, fragmentType);
 
         listFragment.setPresenter(mTabletPresenter);
         mIngredientsFragment.setPresenter(mTabletPresenter);
@@ -88,13 +95,23 @@ public class RecipeListActivity extends RecipeActivity implements RecipeContract
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if (mIsTwoPaneMode) {
-            //outState.putInt(CURRENT_STEP_POS_KEY, mStepPresenter.getStepPos());
+            if (mCurrentStepPos == -1) {
+                outState.putInt(CURRENT_FRAG_TYPE, FRAG_TYPE_INGREDIENT);
+            } else {
+                outState.putInt(CURRENT_FRAG_TYPE, FRAG_TYPE_STEP);
+            }
+
+            outState.putInt(CURRENT_STEP_POS_KEY, mCurrentStepPos);
         }
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void showIngredientsView() {
+        if (mIsTwoPaneMode) {
+            mCurrentStepPos = -1;
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .hide(mStepFragment)
                 .show(mIngredientsFragment)
@@ -103,6 +120,10 @@ public class RecipeListActivity extends RecipeActivity implements RecipeContract
 
     @Override
     public void showStepView() {
+        if (mIsTwoPaneMode) {
+            mCurrentStepPos = mTabletPresenter.getStepPos();
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .hide(mIngredientsFragment)
                 .show(mStepFragment)

@@ -17,6 +17,7 @@ import com.htcardone.baking.R;
 import com.htcardone.baking.data.model.Recipe;
 import com.htcardone.baking.recipe.detail.ingredients.RecipeIngredientsActivity;
 import com.htcardone.baking.recipe.detail.step.RecipeStepActivity;
+import com.htcardone.baking.util.Log;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -77,11 +78,13 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG_TAG, "onResume()");
         mPresenter.start();
     }
 
     @Override
     public void showRecipe(Recipe recipe) {
+        Log.d(LOG_TAG, "showRecipe()");
         if(TextUtils.isEmpty(recipe.getImage())) {
             mLayoutImageContainer.setVisibility(View.GONE);
         } else {
@@ -115,6 +118,7 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
             mViewHighlight.setVisibility(View.VISIBLE);
         } else {
             mViewHighlight.setVisibility(View.INVISIBLE);
+            Log.d(LOG_TAG, "highlightStep stepPos=" + stepPos + " " + mRecyclerView.getChildAt(stepPos) + " " + mRecyclerView.getChildCount());
             //mScrollView.smoothScrollTo(0, (int) mRecyclerView.getChildAt(stepPos).getY());
         }
 

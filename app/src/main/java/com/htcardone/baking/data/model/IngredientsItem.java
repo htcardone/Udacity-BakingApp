@@ -37,13 +37,13 @@ public class IngredientsItem {
 		return ingredient;
 	}
 
-	public IngredientsItem(float quantity, String measure, String ingredient) {
+    public IngredientsItem(float quantity, String measure, String ingredient) {
 		this.quantity = quantity;
 		this.measure = measure;
 		this.ingredient = ingredient;
 	}
 
-	@Override
+    @Override
 	public String toString() {
 		return "IngredientsItem{" +
 				"quantity=" + quantity +

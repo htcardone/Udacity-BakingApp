@@ -21,7 +21,26 @@
         </activity>
         <activity android:name=".recipe.list.RecipeListActivity" />
         <activity android:name=".recipe.detail.step.RecipeStepActivity" />
-        <activity android:name=".recipe.detail.ingredients.RecipeIngredientsActivity"></activity>
+        <activity android:name=".recipe.detail.ingredients.RecipeIngredientsActivity" />
+
+        <receiver android:name=".widget.IngredientsWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredients_widget_provider_info" />
+        </receiver>
+
+        <service android:name=".widget.IngredientsWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <activity android:name=".widget.IngredientsWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

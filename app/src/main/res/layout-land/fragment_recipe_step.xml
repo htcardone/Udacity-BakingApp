@@ -9,4 +9,14 @@
         android:id="@+id/playerView_recipeStep"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/textView_recipeStep_noVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/colorVideoBg"
+        android:textColor="@color/colorFont"
+        android:text="@string/recipe_step_no_video"
+        android:visibility="invisible"/>
 </FrameLayout>

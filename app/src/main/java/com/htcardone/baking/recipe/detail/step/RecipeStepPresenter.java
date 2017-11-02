@@ -2,6 +2,7 @@ package com.htcardone.baking.recipe.detail.step;
 
 import android.support.annotation.NonNull;
 
+import com.htcardone.baking.data.RecipesDataSource;
 import com.htcardone.baking.data.RecipesRepository;
 import com.htcardone.baking.data.model.Recipe;
 import com.htcardone.baking.data.model.StepsItem;
@@ -11,7 +12,7 @@ import static android.support.v4.util.Preconditions.checkNotNull;
 
 public class RecipeStepPresenter implements RecipeStepContract.Presenter {
 
-    private final Recipe mRecipe;
+    private Recipe mRecipe;
     private int mStepPos;
     private StepsItem mStepsItem;
 
@@ -23,8 +24,20 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
                                @NonNull RecipeStepContract.View view,
                                @NonNull RecipeContract.ContainerView containerView) {
 
-        mRecipe = checkNotNull(recipesRepository, "recipesRepository cannot be null!")
-                .getRecipe(recipeId);
+        checkNotNull(recipesRepository, "recipesRepository cannot be null!");
+
+        recipesRepository.getRecipe(recipeId, new RecipesDataSource.GetRecipeCallback() {
+            @Override
+            public void onRecipeLoaded(Recipe recipe) {
+                mRecipe = recipe;
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                //TODO
+            }
+        });
+
         mStepPos = stepPos;
         mView = checkNotNull(view, "view cannot be null!");
         mContainerView = checkNotNull(containerView, "containerView cannot be null!");
@@ -49,17 +62,15 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
 
     @Override
     public void loadStep() {
+        mView.stopVideo();
         mStepsItem = mRecipe.getSteps().get(mStepPos);
-
-        // To keep a consistent UX, lock the landscape mode when the step doesn't have a video
-        //mContainerView.enablePortraitLock(TextUtils.isEmpty(mStepsItem.getVideoURL()));
-
         mView.showStep(mStepsItem);
         mView.enableNavButtons(hasPrev(), hasNext());
     }
 
     @Override
     public int onPrevClicked() {
+        mView.stopVideo();
         if (hasPrev()) {
             mStepPos--;
             loadStep();
@@ -69,6 +80,7 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
 
     @Override
     public int onNextClicked() {
+        mView.stopVideo();
         if (hasNext()) {
             mStepPos++;
             loadStep();

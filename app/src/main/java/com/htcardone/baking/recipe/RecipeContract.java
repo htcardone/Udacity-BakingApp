@@ -4,7 +4,6 @@ public interface RecipeContract {
 
     interface ContainerView {
         void setTitle(String title);
-        void enablePortraitLock(boolean enable);
         void toggleImmersiveMode();
     }
 

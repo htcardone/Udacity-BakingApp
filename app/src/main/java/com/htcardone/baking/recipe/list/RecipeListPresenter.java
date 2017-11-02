@@ -3,6 +3,7 @@ package com.htcardone.baking.recipe.list;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.htcardone.baking.data.RecipesDataSource;
 import com.htcardone.baking.data.RecipesRepository;
 import com.htcardone.baking.data.model.Recipe;
 import com.htcardone.baking.recipe.RecipeContract;
@@ -35,9 +36,18 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
 
     @Override
     public void loadRecipe() {
-        Recipe recipe = mRepository.getRecipe(mRecipeId);
-        mView.showRecipe(recipe);
-        mContainerView.setTitle(recipe.getName());
+        mRepository.getRecipe(mRecipeId, new RecipesDataSource.GetRecipeCallback() {
+            @Override
+            public void onRecipeLoaded(Recipe recipe) {
+                mView.showRecipe(recipe);
+                mContainerView.setTitle(recipe.getName());
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                //TODO
+            }
+        });
     }
 
     @Override
@@ -48,6 +58,7 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
     @Override
     public void onStepClicked(int stepPos) {
         mView.openStepDetails(mRecipeId, stepPos);
+        setHighlight(stepPos);
     }
 
     @Override

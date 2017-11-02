@@ -12,4 +12,6 @@
     <color name="colorBookPaper">#ffffff</color>
     <color name="colorBookLine">#90b8fc</color>
     <color name="colorBookHorLine">#fc9095</color>
+    <color name="colorBookHighlight">#46ffc400</color>
+    <color name="colorVideoBg">#FF000000</color>
 </resources>

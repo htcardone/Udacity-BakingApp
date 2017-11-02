@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardView_recipeItem"
+        android:id="@+id/cardView_ingredientItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         card_view:cardElevation="4dp"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +29,7 @@
                 android:layout_marginTop="8dp"
                 android:textStyle="bold"
                 card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintLeft_toRightOf="@+id/checkBox"
+                card_view:layout_constraintLeft_toRightOf="@+id/checkBox_ingredientItem"
                 card_view:layout_constraintTop_toTopOf="parent"
                 tools:text="350" />
 
@@ -61,7 +63,7 @@
                 tools:text="Bittersweet chocolate (60-70% cacao)" />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/checkBox_ingredientItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

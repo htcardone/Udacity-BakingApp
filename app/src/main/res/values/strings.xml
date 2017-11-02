@@ -16,4 +16,15 @@
     <string name="recipe_list_number">%1s.</string>
     <string name="recipe_list_ingredients">Recipe Ingredients</string>
     <string name="recipe_list_steps">Recipe Steps</string>
+
+    <string name="recipe_step_no_video">Sorry, this step does not have a video =/</string>
+    <string name="recipe_step_next">Next</string>
+    <string name="recipe_step_prev">Previous</string>
+
+    <string name="widget_config_choose">Choose a Recipe</string>
+
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
+
 </resources>

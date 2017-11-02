@@ -9,6 +9,9 @@ import com.htcardone.baking.recipe.detail.step.RecipeStepContract;
 import com.htcardone.baking.recipe.detail.step.RecipeStepPresenter;
 import com.htcardone.baking.recipe.list.RecipeListContract;
 import com.htcardone.baking.recipe.list.RecipeListPresenter;
+import com.htcardone.baking.util.Log;
+
+import static com.htcardone.baking.util.Constants.FRAG_TYPE_STEP;
 
 /**
  * Presenter for the tablet screen that can act as a List Presenter, a Ingredients Detail Presenter
@@ -17,41 +20,54 @@ import com.htcardone.baking.recipe.list.RecipeListPresenter;
 public class RecipeTabletPresenter implements RecipeListContract.Presenter,
         RecipeStepContract.Presenter, RecipeIngredientsContract.Presenter {
 
+    private final String LOG_TAG = RecipeTabletPresenter.class.getSimpleName();
+
     private final RecipesRepository mRepository;
     private final RecipeListPresenter mListPresenter;
     private final RecipeIngredientsPresenter mIngredientsPresenter;
     private final RecipeStepPresenter mStepPresenter;
     private final RecipeContract.TabletView mTabletView;
+    private final int mFragmentType;
 
     public RecipeTabletPresenter(@NonNull RecipesRepository recipesRepository,
                                  @NonNull RecipeListPresenter listPresenter,
                                  @NonNull RecipeIngredientsPresenter ingredientsPresenter,
                                  @NonNull RecipeStepPresenter stepPresenter,
-                                 @NonNull RecipeContract.TabletView tabletView) {
+                                 @NonNull RecipeContract.TabletView tabletView,
+                                 @NonNull int fragmentType) {
 
         mRepository = recipesRepository;
         mListPresenter = listPresenter;
         mIngredientsPresenter = ingredientsPresenter;
         mStepPresenter = stepPresenter;
         mTabletView = tabletView;
+        mFragmentType = fragmentType;
     }
 
     @Override
     public void start() {
+        Log.d(LOG_TAG, "start()");
+
         loadRecipe();
         loadIngredients();
-        //loadStep();
-        mTabletView.showIngredientsView();
+
+        if (mFragmentType == FRAG_TYPE_STEP) {
+            setHighlight(getStepPos());
+            mTabletView.showStepView();
+        } else {
+            setHighlight(-1);
+            mTabletView.showIngredientsView();
+        }
     }
 
     @Override
     public int getRecipeId() {
-        return 0;
+        return mStepPresenter.getRecipeId();
     }
 
     @Override
     public int getStepPos() {
-        return 0;
+        return mStepPresenter.getStepPos();
     }
 
     @Override
@@ -80,6 +96,7 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
 
     @Override
     public void loadRecipe() {
+        Log.d(LOG_TAG, "loadRecipe()");
         mListPresenter.loadRecipe();
     }
 
@@ -92,9 +109,9 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
     @Override
     public void onStepClicked(int stepPos) {
         setHighlight(stepPos);
-        mTabletView.showStepView();
         mStepPresenter.setStepPos(stepPos);
         mStepPresenter.start();
+        mTabletView.showStepView();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class RecipesPresenter implements RecipesContract.Presenter {
 
     @Override
     public void start() {
-        loadRecipes(true);
+        loadRecipes(false);
     }
 
     @Override

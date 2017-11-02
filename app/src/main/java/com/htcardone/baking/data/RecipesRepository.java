@@ -1,6 +1,7 @@
 package com.htcardone.baking.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.htcardone.baking.data.model.Recipe;
 import com.htcardone.baking.util.Log;
@@ -74,31 +75,77 @@ public class RecipesRepository implements RecipesDataSource {
             return;
         }
 
-        getRecipesFromRemoteDataSource(callback);
-
-        /*if (mCacheIsDirty) {
+        if (mCacheIsDirty) {
             // If the cache is dirty we need to fetch new data from the network.
             getRecipesFromRemoteDataSource(callback);
         } else {
             // Query the local storage if available. If not, query the network.
-            mTasksLocalDataSource.getTasks(new LoadTasksCallback() {
+            mRecipesLocalDataSource.getRecipes(new LoadRecipesCallback() {
                 @Override
-                public void onTasksLoaded(List<Task> tasks) {
-                    refreshCache(tasks);
-                    callback.onTasksLoaded(new ArrayList<>(mCachedTasks.values()));
+                public void onRecipesLoaded(List<Recipe> recipes) {
+                    Log.d(LOG_TAG, "getRecipes() using db");
+                    refreshCache(recipes);
+                    callback.onRecipesLoaded(new ArrayList<Recipe>(mCachedRecipes.values()));
                 }
 
                 @Override
                 public void onDataNotAvailable() {
-                    getTasksFromRemoteDataSource(callback);
+                    getRecipesFromRemoteDataSource(callback);
                 }
             });
-        }*/
+        }
+    }
+
+    /**
+     * Gets recipe from local data source (sqlite) unless the table is new or empty.
+     * <p>
+     * Note: {@link GetRecipeCallback#onDataNotAvailable()} is fired if both data sources fail to
+     * get the data.
+     */
+    @Override
+    public void getRecipe(@NonNull final int recipeId, @NonNull final GetRecipeCallback callback) {
+        checkNotNull(recipeId);
+        checkNotNull(callback);
+
+        Recipe cachedRecipe = getRecipeWithId(recipeId);
+
+        // Respond immediately with cache if available
+        if (cachedRecipe != null) {
+            callback.onRecipeLoaded(cachedRecipe);
+            return;
+        }
+
+        // Load from server/persisted if needed.
+
+        // Is the recipe in the local data source? If not, query the network.
+        mRecipesLocalDataSource.getRecipe(recipeId, new GetRecipeCallback() {
+            @Override
+            public void onRecipeLoaded(Recipe recipe) {
+                // Do in memory cache update to keep the app UI up to date
+                if (mCachedRecipes == null) {
+                    mCachedRecipes = new LinkedHashMap<>();
+                }
+                mCachedRecipes.put(recipe.getId(), recipe);
+                callback.onRecipeLoaded(recipe);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override
-    public Recipe getRecipe(@NonNull int recipeId) {
-        return mCachedRecipes.get(recipeId);
+    public void saveRecipe(@NonNull Recipe recipe) {
+        checkNotNull(recipe);
+        mRecipesLocalDataSource.saveRecipe(recipe);
+
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedRecipes == null) {
+            mCachedRecipes = new LinkedHashMap<>();
+        }
+        mCachedRecipes.put(recipe.getId(), recipe);
     }
 
     @Override
@@ -136,7 +183,7 @@ public class RecipesRepository implements RecipesDataSource {
         });
     }
 
-    private void refreshLocalDataSource(List<Recipe> recipes) {
+    private void refreshCache(List<Recipe> recipes) {
         if (mCachedRecipes == null) {
             mCachedRecipes = new LinkedHashMap<>();
         }
@@ -150,6 +197,20 @@ public class RecipesRepository implements RecipesDataSource {
         mCacheIsDirty = false;
     }
 
-    private void refreshCache(List<Recipe> recipes) {
+    private void refreshLocalDataSource(List<Recipe> recipes) {
+        mRecipesLocalDataSource.deleteAllRecipes();
+        for (Recipe recipe : recipes) {
+            mRecipesLocalDataSource.saveRecipe(recipe);
+        }
+    }
+
+    @Nullable
+    private Recipe getRecipeWithId(@NonNull int recipeId) {
+        checkNotNull(recipeId);
+        if (mCachedRecipes == null || mCachedRecipes.isEmpty()) {
+            return null;
+        } else {
+            return mCachedRecipes.get(recipeId);
+        }
     }
 }

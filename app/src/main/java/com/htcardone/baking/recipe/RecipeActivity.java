@@ -104,14 +104,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeContract.
     }
 
     @Override
-    public void enablePortraitLock(boolean enable) {
-        ActivityUtils.enablePortraitLock(this, enable);
-    }
-
-    @Override
     public void toggleImmersiveMode() {
         if (ActivityUtils.isLandscape(this) && !ActivityUtils.isTablet(this)) {
-            mViewRecipeListContainer.setVisibility(View.GONE);
             ActivityUtils.enterImmersiveMode(this);
         }
     }

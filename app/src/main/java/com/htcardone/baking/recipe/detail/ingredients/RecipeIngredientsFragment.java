@@ -16,12 +16,19 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.htcardone.baking.util.Log;
 
 public class RecipeIngredientsFragment extends Fragment implements RecipeIngredientsContract.View {
 
+    private final String LOG_TAG = RecipeIngredientsFragment.class.getSimpleName();
+
+    private final String CLICKED_INGREDIENTS_POS_KEY = "clickedIngPosKey";
+
     private RecipeIngredientsContract.Presenter mPresenter;
 
-    private final RecipeIngredientsAdapter mAdapter = new RecipeIngredientsAdapter();
+    private RecipeIngredientsAdapter mAdapter;
+    
+    private boolean[] mClickedIngredientsPos;
 
     @BindView(R.id.recyclerView_ingredients)
     RecyclerView mRecyclerView;
@@ -40,10 +47,35 @@ public class RecipeIngredientsFragment extends Fragment implements RecipeIngredi
 
         ButterKnife.bind(this, rootView);
 
+        // Load previously saved state, if available.
+        if (savedInstanceState != null) {
+            mClickedIngredientsPos = savedInstanceState.getBooleanArray(CLICKED_INGREDIENTS_POS_KEY);
+        }
+
+        mAdapter = new RecipeIngredientsAdapter(new RecipeIngredientsAdapter.ListItemClickListener() {
+            @Override
+            public void onListItemClick(int position) {
+                mClickedIngredientsPos[position] = !mClickedIngredientsPos[position];
+            }
+        });
+
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(LOG_TAG, "onResume()");
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBooleanArray(CLICKED_INGREDIENTS_POS_KEY, mClickedIngredientsPos);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -53,6 +85,10 @@ public class RecipeIngredientsFragment extends Fragment implements RecipeIngredi
 
     @Override
     public void showIngredients(List<IngredientsItem> ingredients) {
-        mAdapter.replaceData(ingredients);
+        if (mClickedIngredientsPos == null) {
+            mClickedIngredientsPos = new boolean[ingredients.size()];
+        }
+
+        mAdapter.replaceData(ingredients, mClickedIngredientsPos);
     }
 }

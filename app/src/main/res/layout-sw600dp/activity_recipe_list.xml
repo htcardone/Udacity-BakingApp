@@ -9,11 +9,11 @@
         android:layout_margin="8dp"
         android:id="@+id/fragment_recipeList_container"
         android:name="com.htcardone.baking.recipe.list.RecipeListFragment"
-        android:layout_weight="1"/>
+        android:layout_weight="3"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_recipeDetail_container"
-        android:layout_weight="1"/>
+        android:layout_weight="2"/>
 </LinearLayout>

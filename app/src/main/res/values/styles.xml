@@ -31,4 +31,9 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="AppTheme.NavigationButton" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
 </resources>

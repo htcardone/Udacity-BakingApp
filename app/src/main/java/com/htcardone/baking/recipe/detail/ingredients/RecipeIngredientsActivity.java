@@ -23,11 +23,6 @@ public class RecipeIngredientsActivity extends RecipeActivity {
 
         RecipeIngredientsFragment fragment = findOrCreateIngredientsFragment();
         mPresenter = createIngredientsPresenter(recipeId, fragment);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.start();
+        fragment.setPresenter(mPresenter);
     }
 }
