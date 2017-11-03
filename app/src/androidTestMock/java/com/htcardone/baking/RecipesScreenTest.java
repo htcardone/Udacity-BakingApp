@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -24,11 +25,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class RecipesActivityTest {
+public class RecipesScreenTest {
 
     /**
      * {@link ActivityTestRule} is a JUnit {@link Rule @Rule} to launch our activity under test.
@@ -43,6 +45,15 @@ public class RecipesActivityTest {
     // Convenience helpers
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
         return new RecyclerViewMatcher(recyclerViewId);
+    }
+
+    @Test
+    public void clickRecipeCard_opensAddTaskUi() {
+        // Click on the first Recipe
+        onView(withRecyclerView(R.id.recyclerView_recipes).atPosition(0)).perform(click());
+
+        // Check if the add Recipe details screen is displayed
+        onView(withId(R.id.fragment_recipeList_container)).check(matches(isDisplayed()));
     }
 
     @Test
