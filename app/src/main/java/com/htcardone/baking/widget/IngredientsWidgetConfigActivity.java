@@ -103,7 +103,7 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity
         // Setup the presenter
         mPresenter = new RecipesPresenter(Injection.provideRecipesRepository(this),
                 this);
-        mPresenter.start();
+        mPresenter.loadRecipes(false);
     }
 
     @Override

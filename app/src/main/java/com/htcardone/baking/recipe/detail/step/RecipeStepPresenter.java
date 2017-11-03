@@ -44,13 +44,6 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
     }
 
     @Override
-    public void start() {
-        loadStep();
-        mContainerView.setTitle(mRecipe.getName());
-        mContainerView.toggleImmersiveMode();
-    }
-
-    @Override
     public int getRecipeId() {
         return mRecipe.getId();
     }
@@ -62,7 +55,11 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
 
     @Override
     public void loadStep() {
+        mContainerView.setTitle(mRecipe.getName());
+        mContainerView.toggleImmersiveMode();
+
         mView.stopVideo();
+
         mStepsItem = mRecipe.getSteps().get(mStepPos);
         mView.showStep(mStepsItem);
         mView.enableNavButtons(hasPrev(), hasNext());

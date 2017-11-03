@@ -100,7 +100,7 @@ public class RecipeStepFragment extends Fragment implements RecipeStepContract.V
     public void onResume() {
         Log.d(LOG_TAG, "onResume()");
         super.onResume();
-        mPresenter.start();
+        mPresenter.loadStep();
     }
 
     @Override

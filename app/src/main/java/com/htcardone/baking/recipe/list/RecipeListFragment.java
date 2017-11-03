@@ -79,7 +79,7 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
     public void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "onResume()");
-        mPresenter.start();
+        mPresenter.loadRecipe();
     }
 
     @Override

@@ -73,7 +73,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipesContrac
     @Override
     protected void onResume() {
         super.onResume();
-        mRecipesPresenter.start();
+        mRecipesPresenter.loadRecipes(false);
     }
 
     @Override

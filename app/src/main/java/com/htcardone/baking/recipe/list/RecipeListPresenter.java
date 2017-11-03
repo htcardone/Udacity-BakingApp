@@ -30,11 +30,6 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
     }
 
     @Override
-    public void start() {
-        loadRecipe();
-    }
-
-    @Override
     public void loadRecipe() {
         mRepository.getRecipe(mRecipeId, new RecipesDataSource.GetRecipeCallback() {
             @Override

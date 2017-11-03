@@ -1,6 +1,5 @@
 package com.htcardone.baking.recipe.list;
 
-import com.htcardone.baking.BasePresenter;
 import com.htcardone.baking.BaseView;
 import com.htcardone.baking.data.model.Recipe;
 
@@ -12,7 +11,7 @@ public interface RecipeListContract {
         void highlightStep(int stepPos);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
         void loadRecipe();
         void onIngredientsClicked();
         void onStepClicked(int stepPos);

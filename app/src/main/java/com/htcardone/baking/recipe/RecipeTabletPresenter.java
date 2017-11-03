@@ -45,22 +45,6 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
     }
 
     @Override
-    public void start() {
-        Log.d(LOG_TAG, "start()");
-
-        loadRecipe();
-        loadIngredients();
-
-        if (mFragmentType == FRAG_TYPE_STEP) {
-            setHighlight(getStepPos());
-            mTabletView.showStepView();
-        } else {
-            setHighlight(-1);
-            mTabletView.showIngredientsView();
-        }
-    }
-
-    @Override
     public int getRecipeId() {
         return mStepPresenter.getRecipeId();
     }
@@ -72,6 +56,7 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
 
     @Override
     public void loadStep() {
+        Log.d(LOG_TAG, "loadStep()");
         mStepPresenter.loadStep();
     }
 
@@ -91,12 +76,22 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
 
     @Override
     public void loadIngredients() {
+        Log.d(LOG_TAG, "loadIngredients()");
         mIngredientsPresenter.loadIngredients();
     }
 
     @Override
     public void loadRecipe() {
         Log.d(LOG_TAG, "loadRecipe()");
+
+        if (mFragmentType == FRAG_TYPE_STEP) {
+            setHighlight(getStepPos());
+            mTabletView.showStepView();
+        } else {
+            setHighlight(-1);
+            mTabletView.showIngredientsView();
+        }
+
         mListPresenter.loadRecipe();
     }
 
@@ -110,7 +105,7 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
     public void onStepClicked(int stepPos) {
         setHighlight(stepPos);
         mStepPresenter.setStepPos(stepPos);
-        mStepPresenter.start();
+        mStepPresenter.loadStep();
         mTabletView.showStepView();
     }
 

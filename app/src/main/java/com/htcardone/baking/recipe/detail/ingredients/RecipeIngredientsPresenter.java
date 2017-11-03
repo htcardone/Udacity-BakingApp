@@ -41,11 +41,6 @@ public class RecipeIngredientsPresenter implements RecipeIngredientsContract.Pre
     }
 
     @Override
-    public void start() {
-        loadIngredients();
-    }
-
-    @Override
     public void loadIngredients() {
         mView.showIngredients(mIngredients);
     }

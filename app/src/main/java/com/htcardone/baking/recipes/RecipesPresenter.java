@@ -27,11 +27,6 @@ public class RecipesPresenter implements RecipesContract.Presenter {
     }
 
     @Override
-    public void start() {
-        loadRecipes(false);
-    }
-
-    @Override
     public void loadRecipes(boolean forceUpdate) {
 
         if (forceUpdate) {

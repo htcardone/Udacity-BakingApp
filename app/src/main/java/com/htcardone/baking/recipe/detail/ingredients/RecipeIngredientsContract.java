@@ -1,6 +1,5 @@
 package com.htcardone.baking.recipe.detail.ingredients;
 
-import com.htcardone.baking.BasePresenter;
 import com.htcardone.baking.BaseView;
 import com.htcardone.baking.data.model.IngredientsItem;
 
@@ -11,7 +10,7 @@ public interface RecipeIngredientsContract {
         void showIngredients(List<IngredientsItem> ingredients);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
         void loadIngredients();
     }
 }

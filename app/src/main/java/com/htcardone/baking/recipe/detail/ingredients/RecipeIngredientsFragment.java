@@ -69,7 +69,7 @@ public class RecipeIngredientsFragment extends Fragment implements RecipeIngredi
     public void onResume() {
         Log.d(LOG_TAG, "onResume()");
         super.onResume();
-        mPresenter.start();
+        mPresenter.loadIngredients();
     }
 
     @Override
