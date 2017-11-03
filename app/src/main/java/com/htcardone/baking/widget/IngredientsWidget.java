@@ -1,5 +1,6 @@
 package com.htcardone.baking.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -7,7 +8,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.htcardone.baking.Injection;
 import com.htcardone.baking.R;
+import com.htcardone.baking.data.RecipesDataSource;
+import com.htcardone.baking.data.RecipesRepository;
+import com.htcardone.baking.data.model.Recipe;
+import com.htcardone.baking.recipe.list.RecipeListActivity;
+import com.htcardone.baking.recipes.RecipesAdapter;
 import com.htcardone.baking.util.Constants;
 
 /**
@@ -17,8 +24,8 @@ import com.htcardone.baking.util.Constants;
  */
 public class IngredientsWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    static void updateAppWidget(Context context, final AppWidgetManager appWidgetManager,
+                                final int appWidgetId) {
 
         int recipeId = IngredientsWidgetConfigActivity.loadRecipePref(context, appWidgetId);
 
@@ -28,11 +35,11 @@ public class IngredientsWidget extends AppWidgetProvider {
 
         // Add the app widget ID to the intent extras.
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.putExtra(Constants.EXTRA_RECIPE_ID, recipeId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
         // Instantiate the RemoteViews object for the app widget layout.
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
+        final RemoteViews views =
+                new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
 
         // Set up the RemoteViews object to use a RemoteViews adapter.
         // This adapter connects to a RemoteViewsService  through the specified intent.
@@ -42,11 +49,24 @@ public class IngredientsWidget extends AppWidgetProvider {
         // It should be in the same layout used to instantiate the RemoteViews object above.
         views.setEmptyView(R.id.listView_ingredientsWidget, R.id.textView_ingredientsWidget_empty);
 
-        // Set the recipe name
-        views.setTextViewText(R.id.textView_ingredientsWidget_name, "" + recipeId);
+        // Set the recipe name and icon
+        RecipesRepository repository = Injection.provideRecipesRepository(context);
+        repository.getRecipe(recipeId, new RecipesDataSource.GetRecipeCallback() {
+            @Override
+            public void onRecipeLoaded(Recipe recipe) {
+                views.setTextViewText(R.id.textView_ingredientsWidget_name, recipe.getName());
+                views.setImageViewResource(R.id.imageView_ingredientsWidget_icon,
+                        RecipesAdapter.getRecipeIcon(recipe.getName()));
 
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+                // Instruct the widget manager to update the widget
+                appWidgetManager.updateAppWidget(appWidgetId, views);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                //TODO
+            }
+        });
     }
 
     @Override

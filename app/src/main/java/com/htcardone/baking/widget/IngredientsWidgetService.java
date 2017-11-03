@@ -33,36 +33,46 @@ class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
     private Context mContext;
     private int mAppWidgetId;
     private int mRecipeId;
+    private Recipe mRecipe;
 
     public IngredientsRemoteViewsFactory(Context context, Intent intent) {
+        Log.d(LOG_TAG, "constructor()");
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
-        mRecipeId = intent.getIntExtra(Constants.EXTRA_RECIPE_ID, 1);
+        mRecipeId = IngredientsWidgetConfigActivity.loadRecipePref(context, mAppWidgetId);
 
-    }
-
-    @Override
-    public void onCreate() {
-        Log.d(LOG_TAG, "onCreate() mAppWidgetId=" + mAppWidgetId + " mRecipeId=" + mRecipeId);
         RecipesRepository repository = Injection.provideRecipesRepository(mContext);
-
         repository.getRecipe(mRecipeId, new RecipesDataSource.GetRecipeCallback() {
             @Override
             public void onRecipeLoaded(Recipe recipe) {
-                mDataSet = recipe.getIngredients();
+                Log.d(LOG_TAG, "constructor() onRecipeLoaded()");
+                mRecipe = recipe;
+                mDataSet = mRecipe.getIngredients();
             }
 
             @Override
             public void onDataNotAvailable() {
+                Log.d(LOG_TAG, "constructor() onDataNotAvailable()");
                 //TODO
             }
         });
     }
 
     @Override
-    public void onDataSetChanged() {
+    public void onCreate() {
+        Log.d(LOG_TAG, "onCreate() mAppWidgetId=" + mAppWidgetId + " mRecipeId=" + mRecipeId);
+        if (mRecipe != null) {
+            mDataSet = mRecipe.getIngredients();
+        }
+    }
 
+    @Override
+    public void onDataSetChanged() {
+        Log.d(LOG_TAG, "onDataSetChanged()");
+        if (mRecipe != null) {
+            mDataSet = mRecipe.getIngredients();
+        }
     }
 
     @Override
@@ -78,7 +88,7 @@ class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int position) {
-        Log.d(LOG_TAG, "onCreate() mAppWidgetId=" + mAppWidgetId + " mRecipeId=" + mRecipeId
+        Log.d(LOG_TAG, "getViewAt() mAppWidgetId=" + mAppWidgetId + " mRecipeId=" + mRecipeId
                 + " position=" + position);
         // Construct a remote views item based on the app widget item XML file,
         // and set the text based on the position.
@@ -108,6 +118,6 @@ class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 }

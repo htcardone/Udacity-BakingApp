@@ -14,4 +14,5 @@
     <color name="colorBookHorLine">#fc9095</color>
     <color name="colorBookHighlight">#46ffc400</color>
     <color name="colorVideoBg">#FF000000</color>
+    <color name="colorWidgetBg">#8d000000</color>
 </resources>
