@@ -1,5 +1,6 @@
 package com.htcardone.baking.data;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -34,8 +35,9 @@ public class RecipesRepository implements RecipesDataSource {
     boolean mCacheIsDirty = false;
 
     // Prevent direct instantiation.
+    @SuppressLint("RestrictedApi")
     private RecipesRepository(@NonNull RecipesDataSource recipesRemoteDataSource,
-                            @NonNull RecipesDataSource recipesLocalDataSource) {
+                              @NonNull RecipesDataSource recipesLocalDataSource) {
         mRecipesRemoteDataSource = checkNotNull(recipesRemoteDataSource);
         mRecipesLocalDataSource = checkNotNull(recipesLocalDataSource);
     }
@@ -63,6 +65,7 @@ public class RecipesRepository implements RecipesDataSource {
      * Note: {@link LoadRecipesCallback#onDataNotAvailable()} is fired if all data sources fail to
      * get the data.
      */
+    @SuppressLint("RestrictedApi")
     @Override
     public void getRecipes(@NonNull final LoadRecipesCallback callback) {
         checkNotNull(callback);
@@ -85,7 +88,7 @@ public class RecipesRepository implements RecipesDataSource {
                 public void onRecipesLoaded(List<Recipe> recipes) {
                     Log.d(LOG_TAG, "getRecipes() using db");
                     refreshCache(recipes);
-                    callback.onRecipesLoaded(new ArrayList<Recipe>(mCachedRecipes.values()));
+                    callback.onRecipesLoaded(new ArrayList<>(mCachedRecipes.values()));
                 }
 
                 @Override
@@ -102,8 +105,9 @@ public class RecipesRepository implements RecipesDataSource {
      * Note: {@link GetRecipeCallback#onDataNotAvailable()} is fired if both data sources fail to
      * get the data.
      */
+    @SuppressLint("RestrictedApi")
     @Override
-    public void getRecipe(@NonNull final int recipeId, @NonNull final GetRecipeCallback callback) {
+    public void getRecipe(final int recipeId, @NonNull final GetRecipeCallback callback) {
         checkNotNull(recipeId);
         checkNotNull(callback);
 
@@ -136,6 +140,7 @@ public class RecipesRepository implements RecipesDataSource {
         });
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void saveRecipe(@NonNull Recipe recipe) {
         checkNotNull(recipe);
@@ -204,8 +209,9 @@ public class RecipesRepository implements RecipesDataSource {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Nullable
-    private Recipe getRecipeWithId(@NonNull int recipeId) {
+    private Recipe getRecipeWithId(int recipeId) {
         checkNotNull(recipeId);
         if (mCachedRecipes == null || mCachedRecipes.isEmpty()) {
             return null;

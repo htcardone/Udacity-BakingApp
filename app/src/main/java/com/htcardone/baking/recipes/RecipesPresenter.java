@@ -1,5 +1,6 @@
 package com.htcardone.baking.recipes;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.htcardone.baking.data.RecipesDataSource;
@@ -20,6 +21,7 @@ public class RecipesPresenter implements RecipesContract.Presenter {
     private final RecipesRepository mRecipesRepository;
     private final RecipesContract.View mRecipesView;
 
+    @SuppressLint("RestrictedApi")
     public RecipesPresenter(@NonNull RecipesRepository recipesRepository,
                             @NonNull RecipesContract.View recipesView) {
         mRecipesRepository = checkNotNull(recipesRepository, "recipesRepository cannot be null!");

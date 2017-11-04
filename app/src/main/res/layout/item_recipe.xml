@@ -33,7 +33,7 @@
                 android:layout_marginStart="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 card_view:layout_constraintRight_toRightOf="parent" />
 
             <TextView
@@ -60,6 +60,7 @@
                 android:id="@+id/imageView_recipeItem_icon"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:contentDescription="@string/recipe_item_recipe_icon_description"
                 tools:src="@drawable/ic_cake"
                 android:layout_marginStart="16dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -69,6 +70,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="@dimen/recipes_icon_size"
                 android:layout_height="@dimen/recipes_icon_size"
+                android:contentDescription="@string/recipe_item_servings_icon_description"
                 app:srcCompat="@drawable/ic_serving"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
@@ -80,7 +82,7 @@
                 android:id="@+id/textView_recipeItem_servings_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="servings"
+                android:text="@string/recipes_servings"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView_recipeItem_servings"
                 app:layout_constraintLeft_toRightOf="@+id/textView_recipeItem_servings"
                 android:layout_marginStart="4dp"/>
@@ -89,6 +91,7 @@
                 android:id="@+id/imageView3"
                 android:layout_width="@dimen/recipes_icon_size"
                 android:layout_height="@dimen/recipes_icon_size"
+                android:contentDescription="@string/recipe_item_ingredients_icon_description"
                 app:srcCompat="@drawable/ic_basket"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/textView_recipeItem_name"
@@ -96,10 +99,9 @@
                 app:layout_constraintLeft_toRightOf="@+id/imageView_recipeItem_icon" />
 
             <TextView
-                android:id="@+id/textView_recipeItem_ingredients_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ingredients"
+                android:text="@string/recipes_ingredients"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView_recipeItem_ingredients"
                 app:layout_constraintLeft_toRightOf="@+id/textView_recipeItem_ingredients"
                 android:layout_marginStart="4dp" />
@@ -109,6 +111,7 @@
                 android:layout_width="@dimen/recipes_icon_size"
                 android:layout_height="@dimen/recipes_icon_size"
                 app:srcCompat="@drawable/ic_list"
+                android:contentDescription="@string/recipe_item_steps_icon_description"
                 android:layout_marginTop="4dp"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3"
                 android:layout_marginStart="0dp"
@@ -126,11 +129,10 @@
                 tools:text="6" />
 
             <TextView
-                android:id="@+id/textView_recipeItem_steps_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="steps"
+                android:text="@string/recipes_steps"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView_recipeItem_steps"
                 app:layout_constraintLeft_toRightOf="@+id/textView_recipeItem_steps" />
         </android.support.constraint.ConstraintLayout>

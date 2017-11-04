@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/containter_ingredientsWidget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -16,7 +15,8 @@
             android:id="@+id/imageView_ingredientsWidget_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/recipe_item_recipe_icon_description"
             tools:src="@drawable/ic_doughnut"/>
 
         <TextView
@@ -41,5 +41,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="No Ingredients"/>
+        android:text="@string/widget_empty_msg"/>
 </LinearLayout>

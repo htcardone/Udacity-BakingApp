@@ -23,7 +23,7 @@ public interface RecipesDataSource {
 
     void getRecipes(@NonNull LoadRecipesCallback callback);
 
-    void getRecipe(@NonNull int recipeId, @NonNull GetRecipeCallback callback);
+    void getRecipe(int recipeId, @NonNull GetRecipeCallback callback);
 
     void saveRecipe(@NonNull Recipe recipe);
 

@@ -1,5 +1,6 @@
 package com.htcardone.baking.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -52,6 +53,7 @@ public class ActivityUtils {
      * performed by the {@code fragmentManager}.
      *
      */
+    @SuppressLint("RestrictedApi")
     public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
                                               @NonNull Fragment fragment,
                                               @IdRes int frameId) {

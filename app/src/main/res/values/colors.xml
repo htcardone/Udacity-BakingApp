@@ -4,12 +4,8 @@
     <color name="colorPrimaryDark">#2e7d32</color>
     <color name="colorAccent">#64dd17</color>
 
-    <color name="colorIconStroke">#FF000000</color>
-    <color name="colorDivider">@color/colorIconStroke</color>
     <color name="colorFont">#ffffff</color>
-    <color name="colorBackground">#282729</color>
     <color name="colorIcons">#7e8081</color>
-    <color name="colorBookPaper">#ffffff</color>
     <color name="colorBookLine">#90b8fc</color>
     <color name="colorBookHorLine">#fc9095</color>
     <color name="colorBookHighlight">#46ffc400</color>

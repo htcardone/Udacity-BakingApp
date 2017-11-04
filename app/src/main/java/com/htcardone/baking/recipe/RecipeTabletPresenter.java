@@ -34,7 +34,7 @@ public class RecipeTabletPresenter implements RecipeListContract.Presenter,
                                  @NonNull RecipeIngredientsPresenter ingredientsPresenter,
                                  @NonNull RecipeStepPresenter stepPresenter,
                                  @NonNull RecipeContract.TabletView tabletView,
-                                 @NonNull int fragmentType) {
+                                 int fragmentType) {
 
         mRepository = recipesRepository;
         mListPresenter = listPresenter;

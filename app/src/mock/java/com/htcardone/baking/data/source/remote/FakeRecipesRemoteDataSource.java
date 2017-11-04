@@ -44,7 +44,7 @@ public class FakeRecipesRemoteDataSource implements RecipesDataSource {
     }
 
     @Override
-    public void getRecipe(@NonNull int recipeId, @NonNull GetRecipeCallback callback) {
+    public void getRecipe(int recipeId, @NonNull GetRecipeCallback callback) {
         throw new UnsupportedOperationException("This method should be only used to get local " +
                 "Recipe");
     }

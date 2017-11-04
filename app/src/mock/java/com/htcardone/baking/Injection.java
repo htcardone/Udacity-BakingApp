@@ -1,5 +1,6 @@
 package com.htcardone.baking;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.htcardone.baking.data.RecipesDataSource;
@@ -17,6 +18,7 @@ import static android.support.v4.util.Preconditions.checkNotNull;
  */
 public class Injection {
 
+    @SuppressLint("RestrictedApi")
     public static RecipesRepository provideRecipesRepository(Context context) {
         checkNotNull(context);
         AppDatabase database = AppDatabase.getInstance(context);

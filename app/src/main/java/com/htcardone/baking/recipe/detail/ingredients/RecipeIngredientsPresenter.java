@@ -1,5 +1,6 @@
 package com.htcardone.baking.recipe.detail.ingredients;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.htcardone.baking.data.RecipesDataSource;
@@ -18,6 +19,7 @@ public class RecipeIngredientsPresenter implements RecipeIngredientsContract.Pre
 
     private final RecipeIngredientsContract.View mView;
 
+    @SuppressLint("RestrictedApi")
     public RecipeIngredientsPresenter(int recipeId,
                                       @NonNull RecipesRepository recipesRepository,
                                       @NonNull RecipeIngredientsContract.View view) {

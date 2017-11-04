@@ -1,5 +1,6 @@
 package com.htcardone.baking.data.source.local;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.htcardone.baking.data.RecipesDataSource;
@@ -71,7 +72,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
      * found.
      */
     @Override
-    public void getRecipe(@NonNull final int recipeId, final GetRecipeCallback callback) {
+    public void getRecipe(final int recipeId, @NonNull final GetRecipeCallback callback) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -93,6 +94,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
         mAppExecutors.diskIO().execute(runnable);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void saveRecipe(@NonNull final Recipe recipe) {
         checkNotNull(recipe);

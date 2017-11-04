@@ -1,5 +1,6 @@
 package com.htcardone.baking.recipe.list;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -18,7 +19,8 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
     private final RecipeListContract.View mView;
     private final RecipeContract.ContainerView mContainerView;
 
-    public RecipeListPresenter(@Nullable int recipeId,
+    @SuppressLint("RestrictedApi")
+    public RecipeListPresenter(int recipeId,
                                @NonNull RecipesRepository repository,
                                @NonNull RecipeListContract.View view,
                                @NonNull RecipeContract.ContainerView containerView) {

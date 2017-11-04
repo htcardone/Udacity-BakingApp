@@ -1,5 +1,6 @@
 package com.htcardone.baking.recipe.detail.step;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.htcardone.baking.data.RecipesDataSource;
@@ -19,6 +20,7 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
     private final RecipeStepContract.View mView;
     private final RecipeContract.ContainerView mContainerView;
 
+    @SuppressLint("RestrictedApi")
     public RecipeStepPresenter(int recipeId, int stepPos,
                                @NonNull RecipesRepository recipesRepository,
                                @NonNull RecipeStepContract.View view,

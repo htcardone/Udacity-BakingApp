@@ -1,5 +1,6 @@
 package com.htcardone.baking.recipe.list;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -126,6 +127,7 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
         mAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void setPresenter(RecipeListContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
