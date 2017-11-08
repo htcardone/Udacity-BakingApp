@@ -32,4 +32,8 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.IngredientsWidget" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorFont</item>
+    </style>
+
 </resources>
