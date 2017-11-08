@@ -60,8 +60,6 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
         mContainerView.setTitle(mRecipe.getName());
         mContainerView.toggleImmersiveMode();
 
-        mView.stopVideo();
-
         mStepsItem = mRecipe.getSteps().get(mStepPos);
         mView.showStep(mStepsItem);
         mView.enableNavButtons(hasPrev(), hasNext());
@@ -72,6 +70,7 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
         mView.stopVideo();
         if (hasPrev()) {
             mStepPos--;
+            mView.stopVideo();
             loadStep();
         }
         return mStepPos;
@@ -82,6 +81,7 @@ public class RecipeStepPresenter implements RecipeStepContract.Presenter {
         mView.stopVideo();
         if (hasNext()) {
             mStepPos++;
+            mView.stopVideo();
             loadStep();
         }
         return mStepPos;

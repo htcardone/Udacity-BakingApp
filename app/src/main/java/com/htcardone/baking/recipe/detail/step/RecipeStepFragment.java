@@ -3,10 +3,8 @@ package com.htcardone.baking.recipe.detail.step;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.GetChars;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,30 +20,33 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.htcardone.baking.R;
 import com.htcardone.baking.data.model.StepsItem;
-import com.htcardone.baking.util.ActivityUtils;
 import com.htcardone.baking.util.Log;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.google.android.exoplayer2.C.TIME_UNSET;
+
 public class RecipeStepFragment extends Fragment implements RecipeStepContract.View {
     private final String LOG_TAG = RecipeStepFragment.class.getSimpleName();
+
+    private final String CURRENT_VIDEO_POS_KEY = "CURR_VIDEO_POS";
+    private final String CURRENT_VIDEO_STATE_KEY = "CURR_VIDEO_STATE";
 
     private RecipeStepContract.Presenter mPresenter;
 
     private SimpleExoPlayer mPlayer;
+    private long mPlayerPosition;
+    private boolean mPlayerState = true;
 
     @BindView(R.id.playerView_recipeStep)
     SimpleExoPlayerView mPlayerView;
@@ -93,12 +94,17 @@ public class RecipeStepFragment extends Fragment implements RecipeStepContract.V
             });
         }
 
+        // Retrieve video position and state
+        if (savedInstanceState != null) {
+            mPlayerPosition = savedInstanceState.getLong(CURRENT_VIDEO_POS_KEY);
+            mPlayerState = savedInstanceState.getBoolean(CURRENT_VIDEO_STATE_KEY);
+        }
+
         return rootView;
     }
 
     @Override
     public void onResume() {
-        Log.d(LOG_TAG, "onResume()");
         super.onResume();
         mPresenter.loadStep();
     }
@@ -106,7 +112,18 @@ public class RecipeStepFragment extends Fragment implements RecipeStepContract.V
     @Override
     public void onPause() {
         super.onPause();
+        if (mPlayer != null) {
+            mPlayerPosition = mPlayer.getCurrentPosition();
+            mPlayerState = mPlayer.getPlayWhenReady();
+        }
         releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(CURRENT_VIDEO_POS_KEY, mPlayerPosition);
+        outState.putBoolean(CURRENT_VIDEO_STATE_KEY, mPlayerState);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -157,6 +174,7 @@ public class RecipeStepFragment extends Fragment implements RecipeStepContract.V
 
     @Override
     public void stopVideo() {
+        mPlayerPosition = 0;
         releasePlayer();
     }
 
@@ -176,8 +194,13 @@ public class RecipeStepFragment extends Fragment implements RecipeStepContract.V
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getContext(),
                     Util.getUserAgent(getContext(), getString(R.string.app_name))),
                     new DefaultExtractorsFactory(), null, null);
+
+            if (mPlayerPosition != TIME_UNSET) {
+                mPlayer.seekTo(mPlayerPosition);
+            }
+
             mPlayer.prepare(mediaSource);
-            mPlayer.setPlayWhenReady(true);
+            mPlayer.setPlayWhenReady(mPlayerState);
         }
     }
 
